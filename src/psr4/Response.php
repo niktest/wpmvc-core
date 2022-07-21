@@ -111,8 +111,8 @@ class Response
     public function to_array()
     {
         $output = [
-            'error'     => !$this->success || !empty( $this->errors ),
-            'status'    => $this->success ? 200 : 500,
+            'error' => !$this->success || !empty( $this->errors ),
+            'status' => $this->success ? 200 : 500,
         ];
         if ( isset( $this->message ) && !empty( $this->message ) )
             $output['message'] = $this->message;
@@ -121,8 +121,11 @@ class Response
         if ( !empty( $this->errors ) )
             $output['errors'] = $this->errors;
         if ( isset( $this->data ) )
-            $output['data'] = method_exists( $this->data, 'to_array' )
-                ? $this->data->to_array()
+            $output['data'] = is_object( $this->data )
+                ? ( method_exists( $this->data, 'to_array' )
+                    ? $this->data->to_array()
+                    : ( method_exists( $this->data, 'toArray' ) ? $this->data->toArray() : ( array ) $this->data )
+                )
                 : $this->data;
         if ( isset( $this->query ) )
             $output['query'] = $this->query;

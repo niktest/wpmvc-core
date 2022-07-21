@@ -10,7 +10,7 @@ use PHPUnit\Framework\TestCase;
  * @copyright 10Quality <http://www.10quality.com>
  * @license MIT
  * @package WPMVC
- * @version 3.0.0
+ * @version 3.1.16
  */
 class ResponseTest extends TestCase
 {
@@ -104,5 +104,140 @@ class ResponseTest extends TestCase
         $this->assertFalse($r['error']);
         $this->assertEquals($response->message, $r['message']);
         $this->assertEquals(200, $r['status']);
+    }
+    /**
+     * Test response.
+     * @group response
+     */
+    function testDataNumeric()
+    {
+        // Prepare
+        $response = new Response;
+        $response->data = 2;
+        $response->success = true;
+        // Execute
+        $r = $response->to_array();
+        // Assert
+        $this->assertInternalType('array', $r);
+        $this->assertArrayHasKey('data', $r);
+        $this->assertEquals($response->data, $r['data']);
+    }
+    /**
+     * Test response.
+     * @group response
+     */
+    function testDataString()
+    {
+        // Prepare
+        $response = new Response;
+        $response->data = 'A message';
+        $response->success = true;
+        // Execute
+        $r = $response->to_array();
+        // Assert
+        $this->assertInternalType('array', $r);
+        $this->assertArrayHasKey('data', $r);
+        $this->assertEquals($response->data, $r['data']);
+    }
+    /**
+     * Test response.
+     * @group response
+     */
+    function testDataBool()
+    {
+        // Prepare
+        $response = new Response;
+        $response->data = false;
+        $response->success = true;
+        // Execute
+        $r = $response->to_array();
+        // Assert
+        $this->assertInternalType('array', $r);
+        $this->assertArrayHasKey('data', $r);
+        $this->assertEquals($response->data, $r['data']);
+    }
+    /**
+     * Test response.
+     * @group response
+     */
+    function testDataArray()
+    {
+        // Prepare
+        $response = new Response;
+        $response->data = [1,2,3];
+        $response->success = true;
+        // Execute
+        $r = $response->to_array();
+        // Assert
+        $this->assertInternalType('array', $r);
+        $this->assertArrayHasKey('data', $r);
+        $this->assertEquals($response->data, $r['data']);
+    }
+    /**
+     * Test response.
+     * @group response
+     */
+    function testDataObject()
+    {
+        // Prepare
+        $response = new Response;
+        $response->data = new stdClass;
+        $response->data->prop1 = 123;
+        $response->data->prop2 = 'ABC';
+        $response->success = true;
+        // Execute
+        $r = $response->to_array();
+        // Assert
+        $this->assertInternalType('array', $r);
+        $this->assertArrayHasKey('data', $r);
+        $this->assertInternalType('array', $r['data']);
+        $this->assertArrayHasKey('prop1', $r['data']);
+        $this->assertArrayHasKey('prop2', $r['data']);
+        $this->assertEquals($response->data->prop1, $r['data']['prop1']);
+        $this->assertEquals($response->data->prop2, $r['data']['prop2']);
+    }
+    /**
+     * Test response.
+     * @group response
+     */
+    function testDataModel()
+    {
+        // Prepare
+        $data = [
+            'prop1' => 123,
+            'prop2' => 'ABC',
+        ];
+        $response = new Response;
+        $response->data = new Model($data);
+        $response->success = true;
+        // Execute
+        $r = $response->to_array();
+        // Assert
+        $this->assertInternalType('array', $r);
+        $this->assertArrayHasKey('data', $r);
+        $this->assertInternalType('array', $r['data']);
+        $this->assertEquals($data, $r['data']);
+    }
+    /**
+     * Test response.
+     * @group response
+     */
+    function testDataObjectClass()
+    {
+        // Prepare
+        $data = [
+            'prop1' => 123,
+            'prop2' => 'ABC',
+        ];
+        $response = new Response;
+        $response->data = new ObjectClass($data);
+        $response->success = true;
+        // Execute
+        $r = $response->to_array();
+        // Assert
+        $this->assertInternalType('array', $r);
+        $this->assertArrayHasKey('data', $r);
+        $this->assertInternalType('array', $r['data']);
+        $this->assertEquals($data, $r['data']);
     }
 }
