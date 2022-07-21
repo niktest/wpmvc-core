@@ -81,7 +81,7 @@ if ( ! function_exists( 'assets_url' ) ) {
         // Polylang support
         if ( function_exists( 'pll_current_language' ) ) {
             $lang = pll_current_language( 'slug' );
-            if ( strpos( $url, '/' . $lang ) !== false)
+            if ( strpos( $url, '/' . $lang ) !== false && $lang !== false )
                 $url = str_replace( '/' . $lang, '', $url );
         }
         // WPML support
