@@ -56,7 +56,7 @@ class ResponseTest extends TestCase
         $this->assertTrue($response->fails);
         $this->assertFalse($response->passes);
         $this->assertArrayHasKey('field', $response->errors);
-        $this->assertInternalType('array', $response->errors['field']);
+        $this->assertIsArray($response->errors['field']);
         $this->assertEquals('Error', $response->errors['field'][0]);
     }
     /**
@@ -74,7 +74,7 @@ class ResponseTest extends TestCase
         $r = $response->to_array();
 
         // Assert
-        $this->assertInternalType('array', $r);
+        $this->assertIsArray($r);
         $this->assertArrayHasKey('error', $r);
         $this->assertArrayHasKey('errors', $r);
         $this->assertArrayHasKey('status', $r);
@@ -97,7 +97,7 @@ class ResponseTest extends TestCase
         // Execute
         $r = $response->to_array();
         // Assert
-        $this->assertInternalType('array', $r);
+        $this->assertIsArray($r);
         $this->assertArrayHasKey('error', $r);
         $this->assertArrayHasKey('status', $r);
         $this->assertArrayHasKey('message', $r);
@@ -118,7 +118,7 @@ class ResponseTest extends TestCase
         // Execute
         $r = $response->to_array();
         // Assert
-        $this->assertInternalType('array', $r);
+        $this->assertIsArray($r);
         $this->assertArrayHasKey('data', $r);
         $this->assertEquals($response->data, $r['data']);
     }
@@ -135,7 +135,7 @@ class ResponseTest extends TestCase
         // Execute
         $r = $response->to_array();
         // Assert
-        $this->assertInternalType('array', $r);
+        $this->assertIsArray($r);
         $this->assertArrayHasKey('data', $r);
         $this->assertEquals($response->data, $r['data']);
     }
@@ -152,7 +152,7 @@ class ResponseTest extends TestCase
         // Execute
         $r = $response->to_array();
         // Assert
-        $this->assertInternalType('array', $r);
+        $this->assertIsArray($r);
         $this->assertArrayHasKey('data', $r);
         $this->assertEquals($response->data, $r['data']);
     }
@@ -169,7 +169,7 @@ class ResponseTest extends TestCase
         // Execute
         $r = $response->to_array();
         // Assert
-        $this->assertInternalType('array', $r);
+        $this->assertIsArray($r);
         $this->assertArrayHasKey('data', $r);
         $this->assertEquals($response->data, $r['data']);
     }
@@ -188,9 +188,9 @@ class ResponseTest extends TestCase
         // Execute
         $r = $response->to_array();
         // Assert
-        $this->assertInternalType('array', $r);
+        $this->assertIsArray($r);
         $this->assertArrayHasKey('data', $r);
-        $this->assertInternalType('array', $r['data']);
+        $this->assertIsArray($r['data']);
         $this->assertArrayHasKey('prop1', $r['data']);
         $this->assertArrayHasKey('prop2', $r['data']);
         $this->assertEquals($response->data->prop1, $r['data']['prop1']);
@@ -213,9 +213,9 @@ class ResponseTest extends TestCase
         // Execute
         $r = $response->to_array();
         // Assert
-        $this->assertInternalType('array', $r);
+        $this->assertIsArray($r);
         $this->assertArrayHasKey('data', $r);
-        $this->assertInternalType('array', $r['data']);
+        $this->assertIsArray($r['data']);
         $this->assertEquals($data, $r['data']);
     }
     /**
@@ -235,9 +235,9 @@ class ResponseTest extends TestCase
         // Execute
         $r = $response->to_array();
         // Assert
-        $this->assertInternalType('array', $r);
+        $this->assertIsArray($r);
         $this->assertArrayHasKey('data', $r);
-        $this->assertInternalType('array', $r['data']);
+        $this->assertIsArray($r['data']);
         $this->assertEquals($data, $r['data']);
     }
 }

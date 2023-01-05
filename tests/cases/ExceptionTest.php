@@ -1,6 +1,5 @@
 <?php
 
-use WP_Error;
 use WPMVC\Exceptions\WPException;
 use PHPUnit\Framework\TestCase;
 /**

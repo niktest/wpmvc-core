@@ -29,7 +29,7 @@ class RequestTest extends TestCase
         $this->assertEquals(Request::input('number'), 123);
         $this->assertEquals(Request::input('string'), 'test');
         $this->assertEquals(Request::input('bool'), true);
-        $this->assertTrue(is_array(Request::input('array')));
+        $this->assertIsArray(Request::input('array'));
         $this->assertEquals(Request::input('array'), [1,2,3]);
     }
     /**
@@ -45,7 +45,7 @@ class RequestTest extends TestCase
         // Assert
         $this->assertEquals(Request::input('number'), 123);
         $this->assertEquals(Request::input('string'), 'test');
-        $this->assertTrue(is_array(Request::input('array')));
+        $this->assertIsArray(Request::input('array'));
         $this->assertEquals(Request::input('array'), [1,2,3]);
     }
     /**
@@ -64,7 +64,7 @@ class RequestTest extends TestCase
         $this->assertEquals(Request::input('number'), 123);
         $this->assertEquals(Request::input('string'), 'test');
         $this->assertEquals(Request::input('bool'), true);
-        $this->assertTrue(is_array(Request::input('array')));
+        $this->assertIsArray(Request::input('array'));
         $this->assertEquals(Request::input('array'), [1,2,3]);
     }
     /**
@@ -76,7 +76,7 @@ class RequestTest extends TestCase
         // Prepare & run
         $return = Request::input('val', 123);
         // Assert
-        $this->assertInternalType('int', $return);
+        $this->assertIsInt($return);
         $this->assertEquals(123, $return);
     }
     /**
@@ -110,7 +110,20 @@ class RequestTest extends TestCase
         // Run
         $return = Request::input($key);
         // Assert
-        $this->assertInternalType($expected_type, $return);
+        switch ($expected_type) {
+            case 'bool':
+                $this->assertIsBool($return);
+                break;
+            case 'int':
+                $this->assertIsInt($return);
+                break;
+            case 'float':
+                $this->assertIsFloat($return);
+                break;
+            case 'string':
+                $this->assertIsString($return);
+                break;
+        }
         $this->assertEquals($expected, $return);
     }
     /**
@@ -130,7 +143,7 @@ class RequestTest extends TestCase
         // Run
         $return = Request::input($key, null, false, false);
         // Assert
-        $this->assertInternalType('string', $return);
+        $this->assertIsString($return);
         $this->assertEquals($expected, $return);
     }
     /**
@@ -152,8 +165,21 @@ class RequestTest extends TestCase
         // Run
         $return = Request::input($key);
         // Assert
-        $this->assertInternalType('array', $return);
-        $this->assertInternalType($expected_type, $return[$array_index]);
+        $this->assertIsArray($return);
+        switch ($expected_type) {
+            case 'bool':
+                $this->assertIsBool($return[$array_index]);
+                break;
+            case 'int':
+                $this->assertIsInt($return[$array_index]);
+                break;
+            case 'float':
+                $this->assertIsFloat($return[$array_index]);
+                break;
+            case 'string':
+                $this->assertIsString($return[$array_index]);
+                break;
+        }
         $this->assertEquals($expected, $return[$array_index]);
     }
     /**
@@ -169,7 +195,7 @@ class RequestTest extends TestCase
         // Run
         $return = Request::all();
         // Assert
-        $this->assertInternalType('array', $return);
+        $this->assertIsArray($return);
         $this->assertEquals(123, $return['val']);
         $this->assertEquals('test', $return['string']);
         $this->assertEquals(true, $return['bool']);

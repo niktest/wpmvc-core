@@ -62,7 +62,7 @@ class CacheTest extends TestCase
     public function testInstance()
     {
         // Assert
-        $this->assertInternalType('object', Cache::instance());
+        $this->assertIsObject(Cache::instance());
     }
     /**
      * Test.

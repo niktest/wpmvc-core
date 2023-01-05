@@ -53,7 +53,7 @@ class LogTest extends TestCase
      * Removes all files after every test.
      * @since 3.1.6
      */
-    protected function tearDown()
+    protected function tearDown(): void
     {
         global $wp_filesystem;
         foreach(scandir(TEMP_PATH . '/log') as $filename) {
