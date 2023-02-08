@@ -596,7 +596,7 @@ abstract class Bridge implements Plugable
                 foreach ( $post->registry_taxonomies as $taxonomy => $args ) {
                     if ( !isset( $args ) || !is_array( $args ) )
                         throw new Exception( 'Arguments are missing for taxonomy "'.$taxonomy.'", post type "'.$post->type.'".' );
-                    register_taxonomy( $taxonomy, $post->type, $args );
+                    register_taxonomy( $taxonomy, $post->type, apply_filters( 'wpmvc_taxonomy_args_' . $taxonomy,  $args ) );
                 }
             }
         }

@@ -2,12 +2,13 @@
 
 use Ayuco\Listener;
 use WPMVC\Resolver;
-use WPMVC\Commands\SetupCommand;
 use WPMVC\Commands\AddCommand;
-use WPMVC\Commands\RegisterCommand;
 use WPMVC\Commands\CreateCommand;
-use WPMVC\Commands\SetCommand;
+use WPMVC\Commands\GenerateCommand;
 use WPMVC\Commands\PrettifyCommand;
+use WPMVC\Commands\RegisterCommand;
+use WPMVC\Commands\SetCommand;
+use WPMVC\Commands\SetupCommand;
 
 /**
  * CORE WordPress functions.
@@ -16,7 +17,7 @@ use WPMVC\Commands\PrettifyCommand;
  * @copyright 10Quality <http://www.10quality.com>
  * @license MIT
  * @package WPMVC
- * @version 3.1.12
+ * @version 3.1.18
  */
 
 if ( ! function_exists( 'resize_image' ) ) {
@@ -113,6 +114,7 @@ if ( ! function_exists( 'get_ayuco' ) ) {
 
         $ayuco->register(new AddCommand($path));
         $ayuco->register(new CreateCommand($path));
+        $ayuco->register(new GenerateCommand($path));
         $ayuco->register(new RegisterCommand($path));
         $ayuco->register(new SetCommand($path));
         $ayuco->register(new SetupCommand($path));

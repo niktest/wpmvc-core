@@ -31,5 +31,10 @@
             "WPMVC\\": "src/psr4"
         }
     },
+    "scripts": {
+        "test": [
+            "phpunit"
+        ]
+    },
     "minimum-stability": "dev"
 }
