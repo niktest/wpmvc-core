@@ -1,6 +1,7 @@
 # Core Package (For WordPress MVC)
 
 [![Latest Stable Version](https://poser.pugx.org/10quality/wpmvc-core/v/stable)](https://packagist.org/packages/10quality/wpmvc-core)
+![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/10quality/wpmvc-core/test.yml)
 [![Total Downloads](https://poser.pugx.org/10quality/wpmvc-core/downloads)](https://packagist.org/packages/10quality/wpmvc-core)
 [![License](https://poser.pugx.org/10quality/wpmvc-core/license)](https://packagist.org/packages/10quality/wpmvc-core)
 
