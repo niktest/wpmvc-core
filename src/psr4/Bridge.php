@@ -333,11 +333,11 @@ abstract class Bridge implements Plugable
      * Adds a WordPress action hook.
      * @since 1.0.3
      *
-     * @param string $hook          WordPress hook name.
-     * @param string $mvc_call      Lightweight MVC call. (i.e. 'Controller@method')
-     * @param mixed  $priority      Execution priority or MVC params.
-     * @param mixed  $accepted_args Accepted args or priority.
-     * @param int    $args          Accepted args.
+     * @param string $hook           WordPress hook name.
+     * @param string|array $mvc_call Lightweight MVC call. (i.e. 'Controller@method')
+     * @param mixed  $priority       Execution priority or MVC params.
+     * @param mixed  $accepted_args  Accepted args or priority.
+     * @param int    $args           Accepted args.
      */
     public function add_action( $hook, $mvc_call, $priority = 10, $accepted_args = 1, $args = 1 )
     {
@@ -354,11 +354,11 @@ abstract class Bridge implements Plugable
      * Adds a WordPress filter hook.
      * @since 1.0.3
      *
-     * @param string $hook          WordPress hook name.
-     * @param string $mvc_call      Lightweight MVC call. (i.e. 'Controller@method')
-     * @param mixed  $priority      Execution priority or MVC params.
-     * @param mixed  $accepted_args Accepted args or priority.
-     * @param int    $args          Accepted args.
+     * @param string $hook           WordPress hook name.
+     * @param string|array $mvc_call Lightweight MVC call. (i.e. 'Controller@method')
+     * @param mixed  $priority       Execution priority or MVC params.
+     * @param mixed  $accepted_args  Accepted args or priority.
+     * @param int    $args           Accepted args.
      */
     public function add_filter( $hook, $mvc_call, $priority = 10, $accepted_args = 1, $args = 1 )
     {
@@ -375,8 +375,8 @@ abstract class Bridge implements Plugable
      * Adds a WordPress shortcode.
      * @since 1.0.3
      *
-     * @param string $tag      WordPress tag name.
-     * @param string $mvc_call Lightweight MVC call. (i.e. 'Controller@method')
+     * @param string $tag            WordPress tag name.
+     * @param string|array $mvc_call Lightweight MVC call. (i.e. 'Controller@method')
      */
     public function add_shortcode( $tag, $mvc_call, $mvc_args = null )
     {
@@ -721,13 +721,13 @@ abstract class Bridge implements Plugable
      * @since 3.1.15
      *
      * @param string $hook
-     * @param string $mvc_handler
+     * @param string|array $mvc_handler
      * @param int    $priority
      */
     public function remove_action( $hook, $mvc_handler, $priority = 10 )
     {
         remove_action(
-            $hook, 
+            $hook,
             [ &$this, $this->get_mapped_mvc_call( $mvc_handler ) ],
             $priority
         );
@@ -738,13 +738,13 @@ abstract class Bridge implements Plugable
      * @since 3.1.15
      *
      * @param string $hook
-     * @param string $mvc_handler
+     * @param string|array $mvc_handler
      * @param int    $priority
      */
     public function remove_filter( $hook, $mvc_handler, $priority = 10 )
     {
         remove_filter(
-            $hook, 
+            $hook,
             [ &$this, $this->get_mapped_mvc_call( $mvc_handler, true ) ],
             $priority
         );
@@ -754,13 +754,21 @@ abstract class Bridge implements Plugable
      * Returns class method call mapped to a mvc engine method.
      * @since 1.0.3
      *
+     * @param string|array $call
+     *
      * @return string
      */
     private function get_mapped_mvc_call( $call, $return = false )
     {
-        return ( preg_match( '/[vV]iew\@/', $call ) ? '_v_' : '_c_' )
-            . ( $return ? 'return_' : 'void_' )
-            . $call;
+        if ( is_array( $call ) ) {
+            $class_prefix = $this->config->get( 'namespace' ) . '\\Controllers\\';
+            $call = str_replace( $class_prefix, '', implode( '@', $call ) );
+        }
+
+        $type_prefix = stripos( $call, 'view@' ) !== false ? '_v_' : '_c_';
+        $return_prefix = $return ? 'return_' : 'void_';
+
+        return $type_prefix . $return_prefix . $call;
     }
 
     /**
