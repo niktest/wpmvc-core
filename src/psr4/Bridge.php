@@ -751,6 +751,24 @@ abstract class Bridge implements Plugable
     }
 
     /**
+     * Cast MVC call from PHP array Callbacks / Callables to typical string representation
+     * @since 3.1.18
+     *
+     * @param string|array $mvc_call Lightweight MVC call. (i.e. 'Controller@method', or [Controller::class, 'method'])
+     *
+     * @return string
+     */
+    private function cast_mvc_call_to_string( $mvc_call )
+    {
+        if ( is_array( $mvc_call ) && count( $mvc_call ) === 2 ) {
+            $class_path = explode( '\\', $mvc_call[0] );
+            $mvc_call[0] = end( $class_path );
+            return implode( '@', $mvc_call );
+        }
+        return $mvc_call;
+    }
+
+    /**
      * Returns class method call mapped to a mvc engine method.
      * @since 1.0.3
      *
@@ -760,26 +778,21 @@ abstract class Bridge implements Plugable
      */
     private function get_mapped_mvc_call( $call, $return = false )
     {
-        if ( is_array( $call ) ) {
-            $class_prefix = $this->config->get( 'namespace' ) . '\\Controllers\\';
-            $call = str_replace( $class_prefix, '', implode( '@', $call ) );
-        }
-
-        $type_prefix = stripos( $call, 'view@' ) !== false ? '_v_' : '_c_';
-        $return_prefix = $return ? 'return_' : 'void_';
-
-        return $type_prefix . $return_prefix . $call;
+        $call = $this->cast_mvc_call_to_string( $call );
+        return ( preg_match( '/[vV]iew\@/', $call ) ? '_v_' : '_c_' )
+            . ( $return ? 'return_' : 'void_' )
+            . $call;
     }
 
     /**
      * Returns valid action filter item.
      * @since 1.0.3
      *
-     * @param string $hook          WordPress hook name.
-     * @param string $mvc_call      Lightweight MVC call. (i.e. 'Controller@method')
-     * @param mixed  $priority      Execution priority or MVC params.
-     * @param mixed  $accepted_args Accepted args or priority.
-     * @param int    $args          Accepted args.
+     * @param string $hook           WordPress hook name.
+     * @param string|array $mvc_call Lightweight MVC call. (i.e. 'Controller@method')
+     * @param mixed $priority        Execution priority or MVC params.
+     * @param mixed $accepted_args   Accepted args or priority.
+     * @param int $args              Accepted args.
      *
      * @return array
      */
@@ -787,7 +800,7 @@ abstract class Bridge implements Plugable
     {
         return [
             'hook'      => $hook,
-            'mvc'       => $mvc_call,
+            'mvc'       => $this->cast_mvc_call_to_string( $mvc_call ),
             'priority'  => is_array( $priority ) ? $accepted_args : $priority,
             'args'      => is_array( $priority ) ? ( $args ? $args : count( $priority ) ) : $accepted_args,
             'mvc_args'  => is_array( $priority ) ? $priority : null,
