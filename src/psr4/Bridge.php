@@ -762,8 +762,7 @@ abstract class Bridge implements Plugable
     {
         if ( is_array( $mvc_call ) && count( $mvc_call ) === 2 ) {
             $class_path = explode( '\\', $mvc_call[0] );
-            $mvc_call[0] = end( $class_path );
-            return implode( '@', $mvc_call );
+            return end( $class_path ) . '@' . $mvc_call[1];
         }
         return $mvc_call;
     }
